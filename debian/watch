@@ -1,0 +1,6 @@
+version=4
+opts=\
+pgpsigurlmangle=s/\.tar\.xz$/$0.asc/,\
+uversionmangle=s/-rc/~rc/ \
+  https://github.com/rauc/rauc/releases .*/rauc-(\d\S+)\.tar\.xz
+

@@ -1,0 +1,33 @@
+From: Arnaud Rebillout <arnaud.rebillout@collabora.com>
+Date: Tue, 11 Dec 2018 17:59:43 +0000
+Subject: Disable tests that fail in debian build chroot
+Origin: vendor, Debian
+Forwarded: not-needed, Debian-specific
+---
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -170,9 +170,10 @@
+ 	test/slot.test \
+ 	test/stats.test
+ 
+-if WANT_NETWORK
+-check_PROGRAMS += test/network.test
+-endif
++# DM: Disable network tests
++#if WANT_NETWORK
++#check_PROGRAMS += test/network.test
++#endif
+ 
+ if ENABLE_STREAMING
+ check_PROGRAMS += test/nbd.test
+@@ -280,8 +281,8 @@
+ test_install_test_SOURCES = test/install.c
+ test_install_test_LDADD = librauctest.la
+ 
+-test_network_test_SOURCES = test/network.c
+-test_network_test_LDADD = librauctest.la
++#test_network_test_SOURCES = test/network.c
++#test_network_test_LDADD = librauctest.la
+ 
+ test_progress_test_SOURCES = test/progress.c
+ test_progress_test_LDADD = librauctest.la

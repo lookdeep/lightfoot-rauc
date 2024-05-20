@@ -1,0 +1,1 @@
+extend-diff-ignore = (^|/)(contrib/cgi/|.lgtm.yml|.travis.yml|.version|autogen.sh|scan-build|test/minimal-desync-test.conf|.github)

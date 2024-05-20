@@ -1,0 +1,93 @@
+rauc (1.8-2+0lookdeep0) lookdeep; urgency=medium
+
+  * Import for lookdeep
+  * Enable network streaming
+
+ -- Sjoerd Simons <sjoerd@collabora.com>  Tue, 21 Feb 2023 06:58:33 +0100
+
+rauc (1.8-2) unstable; urgency=high
+
+  * Add a patch making a floating point check more lax. It failed on i386 due
+    to excess precision of floating point on that architecture.
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Wed, 26 Oct 2022 10:02:06 +0200
+
+rauc (1.8-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Wed, 05 Oct 2022 10:59:21 +0200
+
+rauc (1.7-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Update standards version to 4.6.1.
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Wed, 07 Sep 2022 15:36:38 +0200
+
+rauc (1.6-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Update standards version to 4.6.0.
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Fri, 11 Feb 2022 14:53:29 +0100
+
+rauc (1.5.1-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Tue, 02 Feb 2021 12:34:39 +0100
+
+rauc (1.5-1) unstable; urgency=medium
+
+  * New upstream release, fixing CVE-2020-25860
+  * Update standards version to 4.5.1.
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Thu, 17 Dec 2020 12:43:25 +0100
+
+rauc (1.4-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Mon, 14 Sep 2020 08:54:16 +0200
+
+rauc (1.3-1) unstable; urgency=medium
+
+  * Adopt package - Big thanks to Arnaud for his work on rauc.
+  * New upstream release.
+  * Update standards version to 4.5.0.
+
+ -- Uwe Kleine-König <ukleinek@debian.org>  Tue, 30 Jun 2020 16:13:15 +0200
+
+rauc (1.2-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Drop patches applied upstream, update remaining patches.
+  * Add upstream patch to fix typos.
+  * Add build dependency on libdbus-dev.
+  * Update extend-diff-ignore in d/source/options.
+  * Update standards version to 4.4.0.
+  * Update upstream copyright years.
+  * Add "Rules-Requires-Root: no" to d/control.
+
+ -- Arnaud Rebillout <arnaud.rebillout@collabora.com>  Mon, 18 Nov 2019 17:32:05 +0700
+
+rauc (1.1-2) unstable; urgency=medium
+
+  [ Uwe Kleine-König ]
+  * Cherry pick fix from upstream that removes a wrong test that made rauc
+    FTBFS. (commit: 35c98ab18f)
+  * Cherry pick fix from upstream that makes rauc work on big endian.
+    (commit: bc25067177)
+  * Another test fix by Enrico Jörns from
+    https://github.com/rauc/rauc/pull/476.
+  * The three above changes fix rauc's testsuite and so make rauc build again.
+    (Closes: #939975)
+
+ -- Arnaud Rebillout <arnaud.rebillout@collabora.com>  Wed, 11 Sep 2019 07:45:32 +0700
+
+rauc (1.1-1) unstable; urgency=medium
+
+  * Initial release (Closes: #916210)
+
+ -- Arnaud Rebillout <arnaud.rebillout@collabora.com>  Fri, 14 Jun 2019 09:06:06 +0700

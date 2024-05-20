@@ -1,0 +1,3 @@
+disable-network-tests.patch
+install-wrapper-to-pkgdatadir.patch
+test-stats-make-tests-involving-floating-point-calcu.patch

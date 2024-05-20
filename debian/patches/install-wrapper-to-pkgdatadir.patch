@@ -1,0 +1,26 @@
+From: Uwe Kleine-König <uwe@kleine-koenig.org>
+Date: Thu Jun 13 11:03:06 2019 +0200
+Subject: Install dbus wrapper script to /usr/share/rauc instead of /usr/libexec
+
+According to the FHS /usr/libexec is for binaries only, so /usr/share/rauc
+seems to be better suited for a shell script.
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -124,7 +124,7 @@
+ dbusinterfacesdir = $(DBUS_INTERFACESDIR)
+ dist_dbusinterfaces_DATA = src/de.pengutronix.rauc.Installer.xml
+ 
+-dbuswrapperdir = $(libexecdir)
++dbuswrapperdir = $(pkgdatadir)
+ nodist_dbuswrapper_SCRIPTS = data/rauc-service.sh
+ 
+ EXTRA_DIST += data/rauc.service.in \
+--- a/data/de.pengutronix.rauc.service.in
++++ b/data/de.pengutronix.rauc.service.in
+@@ -1,5 +1,5 @@
+ [D-BUS Service]
+ Name=de.pengutronix.rauc
+-Exec=@libexecdir@/rauc-service.sh
++Exec=@datadir@/rauc-service.sh
+ User=root
+ SystemdService=rauc.service

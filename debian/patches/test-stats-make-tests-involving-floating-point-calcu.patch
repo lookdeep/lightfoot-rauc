@@ -1,0 +1,68 @@
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Date: Wed, 26 Oct 2022 09:35:18 +0200
+Subject: test/stats: make tests involving floating point calculations
+ more lax
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On i387 floating point calculations can be quite surprising. The
+motivation for this change came from the observation that compiling and
+testing rauc-1.8 on the i386 Debian build machine had a failure on
+
+	g_assert_cmpfloat(r_stats_get_avg(stats), ==, 62.54615384615385);
+
+. In that case r_stats_get_avg(stats) (when stored in a double typed
+variable) returned
+
+	0x1.f45e85e85e85fp+5
+
+which is 0x1f45e85e85e85f00 / 2**55. However when stored in a long
+double typed variable it has the value
+
+	0x1.f45e85e85e85e85p+5
+
+This value is 0x1f45e85e85e85e85 / 2**55 and so it has a significand
+that cannot be stored in the 53 bits that are allocated for double typed
+variables. 62.54615384615385 is a plain double and so evaluates to
+0x1.f45e85e85e85fp+5.
+
+This makes the comparison implemented in g_assert_cmpfloat() (which uses
+long double precision) fail. To fix that, use
+g_assert_cmpfloat_with_epsilon() and also adapt the other tests that
+involve non-trivial calculations to this approach.
+
+Fixes: https://github.com/rauc/rauc/issues/996
+Forwarded: https://github.com/rauc/rauc/pull/997
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ test/stats.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/test/stats.c b/test/stats.c
+index 2cdf41f42134..8cbe73be9c67 100644
+--- a/test/stats.c
++++ b/test/stats.c
+@@ -23,9 +23,19 @@ static void test_basic(void)
+ 	}
+ 
+ 	g_assert_cmpuint(stats->count, ==, 130);
+-	g_assert_cmpfloat(r_stats_get_avg(stats), ==, 62.54615384615385);
+-	g_assert_cmpfloat(r_stats_get_recent_avg(stats), ==, 95.5);
+-	g_assert_cmpfloat(stats->sum, ==, 8131.0);
++	/*
++	 * This used to be tested using
++	 * 	g_assert_cmpfloat(r_stats_get_avg(stats), ==, 62.54615384615385);
++	 * however that suffers from excess precision on i387 where (depending
++	 * on the compiler's register allocation) the value
++	 * 	(long double)g_assert_cmpfloat(r_stats_get_avg(stats)
++	 * might have a higher precision than the plain double value. So test
++	 * this condition in a more lax way using
++	 * g_assert_cmpfloat_with_epsilon().
++	 */
++	g_assert_cmpfloat_with_epsilon(r_stats_get_avg(stats), 62.54615384615385, 1e-10);
++	g_assert_cmpfloat_with_epsilon(r_stats_get_recent_avg(stats), 95.5, 1e-10);
++	g_assert_cmpfloat_with_epsilon(stats->sum, 8131.0, 1e-10);
+ 	g_assert_cmpfloat(stats->min, ==, 0.0);
+ 	g_assert_cmpfloat(stats->max, ==, 127.0);
+ }
